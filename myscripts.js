@@ -1,266 +1,129 @@
-// variable loop
-var currentDay = [
-    {
-        id: "0",
-        hour: "12",
-        time: "12",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "1",
-        hour: "1",
-        time: "1",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "2",
-        hour: "2",
-        time: "2",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "3",
-        hour: "3",
-        time: "3",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "4",
-        hour: "4",
-        time: "4",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "5",
-        hour: "5",
-        time: "5",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "6",
-        hour: "6",
-        time: "6",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "7",
-        hour: "7",
-        time: "7",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "8",
-        hour: "8",
-        time: "8",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "9",
-        hour: "9",
-        time: "9",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "10",
-        hour: "10",
-        time: "10",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "11",
-        hour: "11",
-        time: "11",
-        meridiem: "am",
-        reminder: ""
-    },
-    {
-        id: "12",
-        hour: "12",
-        time: "12",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "13",
-        hour: "1",
-        time: "13",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "14",
-        hour: "2",
-        time: "14",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "15",
-        hour: "3",
-        time: "15",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "16",
-        hour: "4",
-        time: "16",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "17",
-        hour: "5",
-        time: "17",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "18",
-        hour: "6",
-        time: "18",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "19",
-        hour: "7",
-        time: "19",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "20",
-        hour: "8",
-        time: "20",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "21",
-        hour: "9",
-        time: "21",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "22",
-        hour: "10",
-        time: "22",
-        meridiem: "pm",
-        reminder: ""
-    },
-    {
-        id: "23",
-        hour: "11",
-        time: "23",
-        meridiem: "pm",
-        reminder: ""
-    },
+$(document).ready(function() {
+  
+  const now = moment().format('MMMM Do YYYY');
+
+  let nowHour24 = moment().format('H');
+  let nowHour12 = moment().format('h');
+
+  let $dateHeading = $('#navbar-subtitle');
+  $dateHeading.text(now);
+  
+  const saveIcon = "./images/save-regular.svg"; // using font awesome icon https://fontawesome.com/license
+
+  let storedPlans = JSON.parse(localStorage.getItem("storedPlans"));
+
+  if (storedPlans !== null) {
+    planTextArr = storedPlans;
+  } else {
+
+    planTextArr = new Array(9);
+   
+  }
+
+  let $plannerDiv = $('#plannerContainer');
+  
+  $plannerDiv.empty();
+
+ 
+  for (let hour = 9; hour <= 17; hour++) {
+
+    let index = hour - 9;
     
-]
-
-//  header date
-function getHeaderDate() {
-    var currentHeaderDate = moment().format('dddd, MMMM Do');
-    $("#currentDay").text(currentHeaderDate);
-}
-
-// save to localStorage
-function saveReminders() {
-    localStorage.setItem("currentDay", JSON.stringify(currentDay));
-}
-
-// Display localStorage data
-function displayReminders() {
-    currentDay.forEach(function (_thisHour) {
-        $(`#${_thisHour.id}`).val(_thisHour.reminder);
-    })
-}
-
-// Current view local storage data
-function init() {
-    var storedDay = JSON.parse(localStorage.getItem("currentDay"));
-
-    if (storedDay) {
-        currentDay = storedDay;
+    let $rowDiv = $('<div>');
+    $rowDiv.addClass('row');
+    $rowDiv.addClass('plannerRow');
+    $rowDiv.attr('hour-index',hour);
+  
+    // Start building Time box portion of row
+    let $col2TimeDiv = $('<div>');
+    $col2TimeDiv.addClass('col-md-2');
+  
+    // create timeBox element (contains time)
+    const $timeBoxSpn = $('<span>');
+    // can use this to get value
+    $timeBoxSpn.attr('class','timeBox');
+    
+    // format hours for display
+    let displayHour = 0;
+    let ampm = "";
+    if (hour > 12) { 
+      displayHour = hour - 12;
+      ampm = "pm";
+    } else {
+      displayHour = hour;
+      ampm = "am";
     }
+    
+    $timeBoxSpn.text(`${displayHour} ${ampm}`);
 
-    saveReminders();
-    displayReminders();
-}
+    $rowDiv.append($col2TimeDiv);
+    $col2TimeDiv.append($timeBoxSpn);
+    // box portion 
 
-// header date
-getHeaderDate();
+    // input portion
 
-//  Scheduler body
-currentDay.forEach(function(thisHour) {
-    // creates timeblocks row
-    var hourRow = $("<form>").attr({
-        "class": "row"
-    });
-    $(".container").append(hourRow);
+    let $dailyPlanSpn = $('<input>');
 
-    // creates time field
-    var hourField = $("<div>")
-        .text(`${thisHour.hour}${thisHour.meridiem}`)
-        .attr({
-            "class": "col-md-2 hour"
-    });
+    $dailyPlanSpn.attr('id',`input-${index}`);
+    $dailyPlanSpn.attr('hour-index',index);
+    $dailyPlanSpn.attr('type','text');
+    $dailyPlanSpn.attr('class','dailyPlan');
 
-    //  schdeduler input
-    var hourPlan = $("<div>")
-        .attr({
-            "class": "col-md-9 description p-0"
-        });
-    var planData = $("<textarea>");
-    hourPlan.append(planData);
-    planData.attr("id", thisHour.id);
-    if (thisHour.time < moment().format("HH")) {
-        planData.attr ({
-            "class": "past", 
-        })
-    } else if (thisHour.time === moment().format("HH")) {
-        planData.attr({
-            "class": "present"
-        })
-    } else if (thisHour.time > moment().format("HH")) {
-        planData.attr({
-            "class": "future"
-        })
+
+    $dailyPlanSpn.val( planTextArr[index] );
+    
+    
+    let $col9IptDiv = $('<div>');
+    $col9IptDiv.addClass('col-md-9');
+
+    
+    $rowDiv.append($col9IptDiv);
+    $col9IptDiv.append($dailyPlanSpn);
+
+    let $col1SaveDiv = $('<div>');
+    $col1SaveDiv.addClass('col-md-1');
+
+    let $saveBtn = $('<i>');
+    $saveBtn.attr('id',`saveid-${index}`);
+    $saveBtn.attr('save-id',index);
+    $saveBtn.attr('class',"far fa-save saveIcon");
+    
+   
+    $rowDiv.append($col1SaveDiv);
+    $col1SaveDiv.append($saveBtn);
+
+    updateRowColor($rowDiv, hour);
+    
+    $plannerDiv.append($rowDiv);
+  };
+
+  function updateRowColor ($hourRow,hour) { 
+
+    if ( hour < nowHour24) {
+         $hourRow.css("background-color","lightgrey")
+    } else if ( hour > nowHour24) {
+         $hourRow.css("background-color","lightgreen")
+    } else {      
+      $hourRow.css("background-color","tomato")
     }
+  };
 
-    //  save button
-    var saveButton = $("<i class='far fa-save fa-lg'></i>")
-    var savePlan = $("<button>")
-        .attr({
-            "class": "col-md-1 saveBtn"
-    });
-    savePlan.append(saveButton);
-    hourRow.append(hourField, hourPlan, savePlan);
-})
+  $(document).on('click','i', function(event) {
+    event.preventDefault();  
 
-// existing localstorage data 
-init();
+    let $index = $(this).attr('save-id');
 
+    let inputId = '#input-'+$index;
+    let $value = $(inputId).val();
 
-//  localStorage save data
-$(".saveBtn").on("click", function(event) {
-    event.preventDefault();
-    var saveIndex = $(this).siblings(".description").children(".future").attr("id");
-    currentDay[saveIndex].reminder = $(this).siblings(".description").children(".future").val();
-    console.log(saveIndex);
-    saveReminders();
-    displayReminders();
-})
+    planTextArr[$index] = $value;
+   
+    localStorage.setItem("storedPlans", JSON.stringify(planTextArr));
+  });  
+
+  $(document).on('change','input', function(event) {
+    event.preventDefault();      
+
+    let i = $(this).attr('hour-index');
+  });
+});
