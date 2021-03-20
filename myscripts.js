@@ -85,86 +85,86 @@ var currentDay = [
         reminder: ""
     },
     {
-        id: "12P",
+        id: "12",
         hour: "12",
         time: "12",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "1P",
+        id: "13",
         hour: "1",
-        time: "1",
+        time: "13",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "2P",
+        id: "14",
         hour: "2",
-        time: "2",
+        time: "14",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "3P",
+        id: "15",
         hour: "3",
-        time: "3",
+        time: "15",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "4P",
+        id: "16",
         hour: "4",
-        time: "4",
+        time: "16",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "5P",
+        id: "17",
         hour: "5",
-        time: "5",
+        time: "17",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "6P",
+        id: "18",
         hour: "6",
-        time: "6",
+        time: "18",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "7P",
+        id: "19",
         hour: "7",
-        time: "7",
+        time: "19",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "8P",
+        id: "20",
         hour: "8",
-        time: "8",
+        time: "20",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "9P",
+        id: "21",
         hour: "9",
-        time: "9",
+        time: "21",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "10P",
+        id: "22",
         hour: "10",
-        time: "10",
+        time: "22",
         meridiem: "pm",
         reminder: ""
     },
     {
-        id: "11P",
+        id: "23",
         hour: "11",
-        time: "11",
+        time: "23",
         meridiem: "pm",
         reminder: ""
     },
@@ -179,7 +179,7 @@ function getHeaderDate() {
 
 // save to localStorage
 function saveReminders() {
-    localStorage.setItem("currentDay", JSON.stringify(myDay));
+    localStorage.setItem("currentDay", JSON.stringify(currentDay));
 }
 
 // Display localStorage data
